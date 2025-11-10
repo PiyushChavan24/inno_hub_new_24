@@ -1,5 +1,4 @@
 /** @format */
-/** @format */
 
 import React from "react";
 import { Link } from "react-router-dom";
@@ -13,6 +12,9 @@ import {
  Globe,
  Sparkles,
  TrendingUp,
+ GraduationCap,
+ Rocket,
+ Award,
 } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -91,39 +93,48 @@ export default function Home() {
  ];
 
  return (
-  <div className="min-h-screen flex flex-col">
+  <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-purple-50">
    <main className="flex-1">
     {/* Hero Section */}
-    <section className="relative overflow-hidden gradient-hero">
-     <div
-      className="absolute inset-0 opacity-10"
-      style={{
-       backgroundImage: `url(${heroBackground})`,
-       backgroundSize: "cover",
-       backgroundPosition: "center",
-      }}
-     />
-     <div className="container relative py-24 md:py-32">
-      <div className="max-w-3xl mx-auto text-center space-y-8">
-       <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+    <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-purple-600 to-blue-700">
+     <div className="absolute inset-0 opacity-20">
+      <div
+       className="absolute inset-0"
+       style={{
+        backgroundImage: `url(${heroBackground})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        filter: "blur(2px)",
+       }}
+      />
+     </div>
+     <div className="absolute inset-0 bg-gradient-to-br from-blue-600/90 via-purple-600/90 to-blue-700/90"></div>
+     <div className="container relative py-20 md:py-32 z-10">
+      <div className="max-w-4xl mx-auto text-center space-y-8">
+       <div className="flex justify-center mb-4">
+        <div className="p-4 rounded-full bg-white/20 backdrop-blur-sm">
+         <GraduationCap className="h-12 w-12 text-white" />
+        </div>
+       </div>
+       <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight text-white">
         Showcase Your{" "}
-        <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+        <span className="bg-gradient-to-r from-yellow-300 to-pink-300 bg-clip-text text-transparent">
          Unique Projects
         </span>{" "}
         to the World
        </h1>
-       <p className="text-lg md:text-xl text-muted-foreground">
+       <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed">
         A unified platform connecting students across universities to share,
         discover, and collaborate on innovative academic projects.
        </p>
-       <div className="flex flex-wrap gap-4 justify-center">
-        <Button size="lg" variant="hero" asChild>
-         <Link to="/projects">
+       <div className="flex flex-wrap gap-4 justify-center pt-4">
+        <Button size="lg" variant="hero" className="bg-white text-blue-600 hover:bg-white/90 shadow-xl" asChild>
+         <Link to="/explore-projects">
           Explore Projects <ArrowRight className="ml-2 h-5 w-5" />
          </Link>
         </Button>
-        <Button size="lg" variant="outline" asChild>
-         <Link to="/dashboard">Submit Your Project</Link>
+        <Button size="lg" variant="outline" className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-600" asChild>
+         <Link to="/upload-project">Submit Your Project</Link>
         </Button>
        </div>
       </div>
@@ -131,30 +142,43 @@ export default function Home() {
     </section>
 
     {/* Stats Section */}
-    <section className="py-16 border-y bg-muted/30">
+    <section className="py-16 border-y bg-white/80 backdrop-blur-sm">
      <div className="container">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
        {stats.map((stat, index) => (
-        <div key={index} className="text-center space-y-2">
-         <stat.icon className="h-8 w-8 mx-auto text-primary" />
-         <p className="text-3xl font-bold">{stat.value}</p>
-         <p className="text-sm text-muted-foreground">{stat.label}</p>
-        </div>
+        <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-white to-blue-50/50">
+         <CardContent className="pt-6 text-center space-y-3">
+          <div className="flex justify-center">
+           <div className="p-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500">
+            <stat.icon className="h-6 w-6 text-white" />
+           </div>
+          </div>
+          <p className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+           {stat.value}
+          </p>
+          <p className="text-sm font-medium text-gray-600">{stat.label}</p>
+         </CardContent>
+        </Card>
        ))}
       </div>
      </div>
     </section>
 
     {/* Features Section */}
-    <section className="py-20">
+    <section className="py-20 bg-gradient-to-b from-white to-blue-50/30">
      <div className="container">
-      <div className="text-center max-w-2xl mx-auto mb-12">
-       <h2 className="text-3xl md:text-4xl font-bold mb-4">
-        Why Choose ProjectHub?
+      <div className="text-center max-w-3xl mx-auto mb-16">
+       <div className="flex justify-center mb-4">
+        <div className="p-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500">
+         <Rocket className="h-6 w-6 text-white" />
+        </div>
+       </div>
+       <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+        Why Choose InnoHub?
        </h2>
-       <p className="text-muted-foreground">
+       <p className="text-lg text-gray-600 leading-relaxed">
         Our platform offers comprehensive features designed to amplify your
-        academic achievements and connect you with opportunities.
+        academic achievements and connect you with opportunities worldwide.
        </p>
       </div>
 
@@ -162,13 +186,16 @@ export default function Home() {
        {features.map((feature, index) => (
         <Card
          key={index}
-         className="gradient-card shadow-soft hover:shadow-medium transition-smooth">
-         <CardContent className="pt-6 space-y-4">
-          <div className="h-12 w-12 rounded-lg gradient-primary flex items-center justify-center">
-           <feature.icon className="h-6 w-6 text-primary-foreground" />
+         className="group border-0 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 bg-white overflow-hidden relative">
+         <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+         <CardContent className="pt-6 space-y-4 relative z-10">
+          <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+           <feature.icon className="h-7 w-7 text-white" />
           </div>
-          <h3 className="font-semibold text-lg">{feature.title}</h3>
-          <p className="text-sm text-muted-foreground">{feature.description}</p>
+          <h3 className="font-bold text-xl text-gray-800 group-hover:text-blue-600 transition-colors">
+           {feature.title}
+          </h3>
+          <p className="text-sm text-gray-600 leading-relaxed">{feature.description}</p>
          </CardContent>
         </Card>
        ))}
@@ -177,19 +204,26 @@ export default function Home() {
     </section>
 
     {/* Featured Projects */}
-    <section className="py-20 bg-muted/30">
+    <section className="py-20 bg-white">
      <div className="container">
-      <div className="flex items-center justify-between mb-12">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-12 gap-4">
        <div>
-        <h2 className="text-3xl md:text-4xl font-bold mb-2">
-         Featured Projects
-        </h2>
-        <p className="text-muted-foreground">
+        <div className="flex items-center gap-3 mb-3">
+         <div className="p-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500">
+          <Award className="h-5 w-5 text-white" />
+         </div>
+         <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          Featured Projects
+         </h2>
+        </div>
+        <p className="text-lg text-gray-600">
          Discover innovative work from students worldwide
         </p>
        </div>
-       <Button variant="outline" asChild>
-        <Link to="/projects">View All</Link>
+       <Button variant="hero" className="shadow-lg" asChild>
+        <Link to="/explore-projects">
+         View All <ArrowRight className="ml-2 h-4 w-4" />
+        </Link>
        </Button>
       </div>
 
@@ -202,28 +236,47 @@ export default function Home() {
     </section>
 
     {/* CTA Section */}
-    <section className="py-20">
+    <section className="py-20 bg-gradient-to-br from-blue-600 via-purple-600 to-blue-700">
      <div className="container">
-      <Card className="gradient-primary text-primary-foreground shadow-hover">
-       <CardContent className="py-16 text-center space-y-6">
-        <h2 className="text-3xl md:text-4xl font-bold">
-         Ready to Share Your Innovation?
-        </h2>
-        <p className="text-lg opacity-90 max-w-2xl mx-auto">
-         Join thousands of students already showcasing their projects. Get
-         discovered by recruiters, collaborators, and industry leaders.
-        </p>
-        <div className="flex gap-4 justify-center">
-         <Button size="lg" variant="secondary" asChild>
-          <Link to="/dashboard">Get Started</Link>
-         </Button>
-         <Button
-          size="lg"
-          variant="outline"
-          className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary"
-          asChild>
-          <Link to="/about">Learn More</Link>
-         </Button>
+      <Card className="border-0 shadow-2xl overflow-hidden bg-gradient-to-br from-blue-600/95 via-purple-600/95 to-blue-700/95 backdrop-blur-sm">
+       <CardContent className="py-16 md:py-20 text-center space-y-8 relative">
+        <div className="absolute inset-0 opacity-10">
+         <div
+          className="absolute inset-0"
+          style={{
+           backgroundImage: `url(${heroBackground})`,
+           backgroundSize: "cover",
+           backgroundPosition: "center",
+          }}
+         />
+        </div>
+        <div className="relative z-10">
+         <div className="flex justify-center mb-6">
+          <div className="p-4 rounded-full bg-white/20 backdrop-blur-sm">
+            <Rocket className="h-8 w-8 text-white" />
+          </div>
+         </div>
+         <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+          Ready to Share Your Innovation?
+         </h2>
+         <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed">
+          Join thousands of students already showcasing their projects. Get
+          discovered by recruiters, collaborators, and industry leaders.
+         </p>
+         <div className="flex flex-wrap gap-4 justify-center pt-4">
+          <Button size="lg" variant="hero" className="bg-white text-blue-600 hover:bg-white/90 shadow-xl font-semibold" asChild>
+           <Link to="/register">
+            Get Started <ArrowRight className="ml-2 h-5 w-5" />
+           </Link>
+          </Button>
+          <Button
+           size="lg"
+           variant="outline"
+           className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-600 font-semibold"
+           asChild>
+           <Link to="/about">Learn More</Link>
+          </Button>
+         </div>
         </div>
        </CardContent>
       </Card>
