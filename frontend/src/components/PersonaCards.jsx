@@ -34,8 +34,15 @@ export const PersonaCards = () => {
   <section className="py-16 bg-background">
    <div className="container mx-auto px-6">
     <div className="text-center mb-12">
-     <h2 className="text-3xl md:text-4xl font-bold mb-3">Student Personas</h2>
-     <p className="text-muted-foreground text-lg">
+     <div className="flex justify-center mb-4">
+      <div className="p-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500">
+       <MessageCircle className="h-6 w-6 text-white" />
+      </div>
+     </div>
+     <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+      Student Personas
+     </h2>
+     <p className="text-gray-600 text-lg max-w-2xl mx-auto">
       Understanding the needs and concerns of our users
      </p>
     </div>
@@ -46,10 +53,10 @@ export const PersonaCards = () => {
       return (
        <Card
         key={index}
-        className="group p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 bg-card border-2 relative overflow-hidden">
+        className="group p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 bg-white border-0 shadow-lg relative overflow-hidden">
         {/* Gradient Background */}
         <div
-         className={`absolute inset-0 bg-gradient-to-br ${persona.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}
+         className={`absolute inset-0 bg-gradient-to-br ${persona.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
         />
 
         {/* Content */}
@@ -61,7 +68,7 @@ export const PersonaCards = () => {
          <h3 className={`text-xl font-bold mb-3 ${persona.iconColor}`}>
           {persona.title}
          </h3>
-         <p className="text-muted-foreground leading-relaxed">
+         <p className="text-gray-600 leading-relaxed">
           "{persona.content}"
          </p>
         </div>

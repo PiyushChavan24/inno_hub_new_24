@@ -29,16 +29,21 @@ export const ScopeFeasibility = () => {
   <section className="py-16 bg-gradient-to-br from-primary/5 via-secondary/5 to-background">
    <div className="container mx-auto px-6">
     <div className="text-center mb-12">
+     <div className="flex justify-center mb-4">
+      <div className="p-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500">
+       <CheckCircle2 className="h-6 w-6 text-white" />
+      </div>
+     </div>
      <Badge
       variant="default"
-      className="mb-4 bg-gradient-to-r from-success to-success/80 text-white border-0">
+      className="mb-4 bg-gradient-to-r from-green-500 to-green-600 text-white border-0 shadow-lg">
       <CheckCircle2 className="w-4 h-4 mr-2" />
       Validated
      </Badge>
-     <h2 className="text-3xl md:text-4xl font-bold mb-3">
+     <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
       Scope & Feasibility
      </h2>
-     <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+     <p className="text-gray-600 text-lg max-w-2xl mx-auto">
       Comprehensive assessment of technical, financial, and practical viability
      </p>
     </div>
@@ -49,10 +54,10 @@ export const ScopeFeasibility = () => {
       return (
        <Card
         key={index}
-        className="group p-8 text-center hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-card border-2 relative overflow-hidden">
+        className="group p-8 text-center hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 bg-white border-0 shadow-lg relative overflow-hidden">
         {/* Gradient Background */}
         <div
-         className={`absolute inset-0 bg-gradient-to-br ${point.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}
+         className={`absolute inset-0 bg-gradient-to-br ${point.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
         />
 
         {/* Content */}
@@ -61,8 +66,10 @@ export const ScopeFeasibility = () => {
           className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${point.color} p-4 mb-4 shadow-lg mx-auto group-hover:scale-110 transition-transform duration-300`}>
           <Icon className="w-full h-full text-white" />
          </div>
-         <h3 className="text-xl font-bold mb-3">{point.title}</h3>
-         <p className="text-muted-foreground leading-relaxed">
+         <h3 className="text-xl font-bold mb-3 text-gray-800 group-hover:text-blue-600 transition-colors">
+          {point.title}
+         </h3>
+         <p className="text-gray-600 leading-relaxed">
           {point.description}
          </p>
         </div>

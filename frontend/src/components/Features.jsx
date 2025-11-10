@@ -42,10 +42,15 @@ export const Features = () => {
   <section className="py-16 bg-gradient-to-br from-primary/5 via-secondary/5 to-background">
    <div className="container mx-auto px-6">
     <div className="text-center mb-12">
-     <h2 className="text-3xl md:text-4xl font-bold mb-3">
+     <div className="flex justify-center mb-4">
+      <div className="p-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500">
+       <Shield className="h-6 w-6 text-white" />
+      </div>
+     </div>
+     <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
       Platform Capabilities
      </h2>
-     <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+     <p className="text-gray-600 text-lg max-w-2xl mx-auto">
       Comprehensive tools designed to enhance project visibility, collaboration,
       and academic integrity
      </p>
@@ -57,7 +62,7 @@ export const Features = () => {
       return (
        <Card
         key={index}
-        className="group p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-card border-2 relative overflow-hidden">
+        className="group p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 bg-white border-0 shadow-lg relative overflow-hidden">
         {/* Gradient Background */}
         <div
          className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${feature.color} opacity-10 rounded-full blur-2xl group-hover:opacity-20 transition-opacity duration-300`}
@@ -71,13 +76,15 @@ export const Features = () => {
            <Icon className="w-full h-full text-white" />
           </div>
           <div className="flex-1">
-           <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
+           <h3 className="text-xl font-bold mb-2 text-gray-800 group-hover:text-blue-600 transition-colors">
+            {feature.title}
+           </h3>
            <Badge variant="secondary" className="text-xs">
             {feature.aim}
            </Badge>
           </div>
          </div>
-         <p className="text-muted-foreground leading-relaxed">
+         <p className="text-gray-600 leading-relaxed">
           {feature.description}
          </p>
         </div>
