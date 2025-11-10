@@ -231,7 +231,6 @@
 
 /** @format */
 import { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ProjectCard from "../components/ProjectCard";
 
@@ -244,8 +243,9 @@ import {
  SelectTrigger,
  SelectValue,
 } from "../components/ui/select";
+import { Card } from "../components/ui/card";
 
-import { Search, Filter } from "lucide-react";
+import { Search, Filter, Compass, Sparkles } from "lucide-react";
 
 const Explore = () => {
  const [projects, setProjects] = useState([]);
@@ -289,72 +289,113 @@ const Explore = () => {
  });
 
  return (
-  <div className="min-h-screen flex flex-col">
+  <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-purple-50">
    <main className="flex-1">
     {/* Header */}
-    <section className="gradient-hero border-b py-16">
-     <div className="container">
-      <h1 className="text-4xl md:text-5xl font-bold mb-4">
-       Approved Projects –{" "}
-       <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-        Explore
-       </span>
-      </h1>
-      <p className="text-lg text-muted-foreground max-w-2xl">
-       Browse all approved student projects across the system.
-      </p>
+    <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-purple-600 to-blue-700">
+     <div className="absolute inset-0 opacity-20">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent_50%)]"></div>
+     </div>
+     <div className="container relative py-12 md:py-16 z-10 px-4">
+      <div className="max-w-4xl">
+       <div className="flex items-center gap-4 mb-6">
+        <div className="p-3 rounded-full bg-white/20 backdrop-blur-sm flex-shrink-0">
+         <Compass className="h-6 w-6 text-white" />
+        </div>
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
+         Explore{" "}
+         <span className="bg-gradient-to-r from-yellow-300 to-pink-300 bg-clip-text text-transparent">
+          Projects
+         </span>
+        </h1>
+       </div>
+       <p className="text-lg text-white/90 max-w-2xl leading-relaxed">
+        Discover innovative student projects from universities worldwide. Browse,
+        search, and explore approved projects across various categories.
+       </p>
+       <div className="flex items-center gap-2 pt-4">
+        <Sparkles className="h-5 w-5 text-yellow-300" />
+        <span className="text-white/80 text-sm">All projects are verified and approved</span>
+        <Sparkles className="h-5 w-5 text-yellow-300" />
+       </div>
+      </div>
      </div>
     </section>
 
     {/* Filters */}
-    <section className="py-8 border-b bg-muted/30">
-     <div className="container">
-      <div className="flex flex-col md:flex-row gap-4">
-       {/* Search */}
-       <div className="flex-1 relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input
-         placeholder="Search projects..."
-         value={searchQuery}
-         onChange={(e) => setSearchQuery(e.target.value)}
-         className="pl-10"
-        />
+    <section className="py-8 bg-white/80 backdrop-blur-sm border-b border-gray-100">
+     <div className="container px-4">
+      <Card className="border-0 shadow-lg bg-white p-6">
+       <div className="flex flex-col md:flex-row gap-4 mb-4">
+        {/* Search */}
+        <div className="flex-1 relative">
+         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+         <Input
+          placeholder="Search projects by title or description..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="pl-11 h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+         />
+        </div>
+
+        {/* Category Filter */}
+        <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+         <SelectTrigger className="w-full md:w-[250px] h-11 border-gray-200 focus:border-blue-500 focus:ring-blue-500">
+          <div className="flex items-center">
+           <Filter className="h-4 w-4 mr-2 text-gray-400" />
+           <SelectValue placeholder="Select Category" />
+          </div>
+         </SelectTrigger>
+
+         <SelectContent>
+          <SelectItem value="all">All Categories</SelectItem>
+          <SelectItem value="Artificial Intelligence">
+           Artificial Intelligence
+          </SelectItem>
+          <SelectItem value="Blockchain">Blockchain</SelectItem>
+          <SelectItem value="Cloud Computing">Cloud Computing</SelectItem>
+          <SelectItem value="Web Development">Web Development</SelectItem>
+          <SelectItem value="Mobile Development">Mobile Development</SelectItem>
+          <SelectItem value="Data Science">Data Science</SelectItem>
+          <SelectItem value="Cybersecurity">Cybersecurity</SelectItem>
+          <SelectItem value="IoT & Embedded">IoT & Embedded</SelectItem>
+         </SelectContent>
+        </Select>
        </div>
 
-       {/* Category Filter */}
-       <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-        <SelectTrigger className="w-full md:w-[230px]">
-         <Filter className="h-4 w-4 mr-2" />
-         <SelectValue placeholder="Category" />
-        </SelectTrigger>
-
-        <SelectContent>
-         <SelectItem value="all">All Categories</SelectItem>
-         <SelectItem value="Artificial Intelligence">
-          Artificial Intelligence
-         </SelectItem>
-         <SelectItem value="Blockchain">Blockchain</SelectItem>
-         <SelectItem value="Cloud Computing">Cloud Computing</SelectItem>
-         <SelectItem value="Web Development">Web Development</SelectItem>
-         <SelectItem value="Mobile Development">Mobile Development</SelectItem>
-         <SelectItem value="Data Science">Data Science</SelectItem>
-         <SelectItem value="Cybersecurity">Cybersecurity</SelectItem>
-         <SelectItem value="IoT & Embedded">IoT & Embedded</SelectItem>
-        </SelectContent>
-       </Select>
-      </div>
-
-      <div className="mt-4 text-sm text-muted-foreground">
-       Showing {filteredProjects.length} of {projects.length} projects
-      </div>
+       <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+        <div className="text-sm font-medium text-gray-700">
+         Showing <span className="text-blue-600 font-bold">{filteredProjects.length}</span> of{" "}
+         <span className="text-purple-600 font-bold">{projects.length}</span> projects
+        </div>
+        {(searchQuery || selectedCategory !== "all") && (
+         <Button
+          variant="outline"
+          size="sm"
+          onClick={() => {
+           setSearchQuery("");
+           setSelectedCategory("all");
+          }}
+          className="hover:bg-gray-50">
+          Clear Filters
+         </Button>
+        )}
+       </div>
+      </Card>
      </div>
     </section>
 
     {/* Projects Grid */}
-    <section className="py-12">
-     <div className="container">
+    <section className="py-12 bg-gradient-to-b from-white to-blue-50/30">
+     <div className="container px-4">
       {loading ? (
-       <p className="text-center text-muted-foreground">Loading...</p>
+       <div className="text-center py-16">
+        <div className="inline-block p-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 mb-4">
+         <Compass className="h-8 w-8 text-white animate-pulse" />
+        </div>
+        <p className="text-gray-600 font-medium text-lg">Loading projects...</p>
+        <p className="text-sm text-gray-500 mt-2">Please wait while we fetch approved projects</p>
+       </div>
       ) : filteredProjects.length > 0 ? (
        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredProjects.map((project) => (
@@ -376,18 +417,29 @@ const Explore = () => {
         ))}
        </div>
       ) : (
-       <div className="text-center py-12">
-        <p className="text-muted-foreground">
-         No projects found matching your criteria.
+       <div className="text-center py-16 px-4">
+        <div className="inline-block p-4 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 mb-4">
+         <Search className="h-8 w-8 text-gray-400" />
+        </div>
+        <p className="text-lg font-semibold text-gray-700 mb-2">
+         No projects found
         </p>
-        <Button
-         onClick={() => {
-          setSearchQuery("");
-          setSelectedCategory("all");
-         }}
-         className="mt-4">
-         Clear Filters
-        </Button>
+        <p className="text-gray-600 mb-6 max-w-md mx-auto">
+         {searchQuery || selectedCategory !== "all"
+          ? "No projects match your search criteria. Try adjusting your filters."
+          : "There are no approved projects available at the moment."}
+        </p>
+        {(searchQuery || selectedCategory !== "all") && (
+         <Button
+          variant="hero"
+          className="bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 shadow-lg"
+          onClick={() => {
+           setSearchQuery("");
+           setSelectedCategory("all");
+          }}>
+          <Filter className="h-4 w-4 mr-2" /> Clear All Filters
+         </Button>
+        )}
        </div>
       )}
      </div>
