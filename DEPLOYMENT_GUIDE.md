@@ -161,11 +161,14 @@ This guide provides step-by-step instructions to deploy your Flask + React appli
      - **Output Directory**: `build`
      - **Install Command**: `npm install`
 
-3. **Set Environment Variables (if needed)**
+3. **Set Environment Variables (Optional - Skip if using proxy)**
 
+   - ⚠️ **You can skip this step** if you're using the proxy/rewrite approach (recommended - no code changes)
+   - Only needed if you want to use environment variables instead of proxy
    - In project settings → Environment Variables
-   - Add `REACT_APP_API_URL` if you want to use environment variables
-   - **Note**: Since your code uses hardcoded URLs, you'll need to update frontend code OR use Vercel's rewrite rules
+   - Add `REACT_APP_API_URL` with your backend URL (e.g., `https://your-backend.onrender.com`)
+   - **Note**: Using environment variables requires updating frontend code to use `process.env.REACT_APP_API_URL`
+   - **Recommended**: Use the proxy approach in step 4 below (no code changes needed)
 
 4. **Configure API Proxy (Important!)**
 
@@ -356,6 +359,54 @@ Since your frontend code has hardcoded `http://127.0.0.1:5000`, you have two opt
 - Check backend URL is accessible
 - Test backend URL directly in browser
 - Check browser console for CORS errors
+
+### Vercel Build Permission Error (`react-scripts: Permission denied`):
+
+**Error**: `sh: line 1: /vercel/path0/frontend/node_modules/.bin/react-scripts: Permission denied`
+
+**Solutions**:
+
+1. **Clear Vercel Build Cache**:
+
+   - Go to Vercel Dashboard → Your Project → Settings → General
+   - Scroll to "Build & Development Settings"
+   - Click "Clear Build Cache"
+   - Redeploy
+
+2. **Verify Root Directory in Vercel**:
+
+   - Go to Vercel Dashboard → Your Project → Settings → General
+   - Under "Root Directory", make sure it's set to `frontend` (not empty)
+   - If it's empty, set it to `frontend` and redeploy
+
+3. **Check Build Settings**:
+
+   - Framework Preset: `Create React App`
+   - Root Directory: `frontend`
+   - Build Command: `npm run build` (or leave default)
+   - Output Directory: `build`
+   - Install Command: `npm install` (or leave default)
+
+4. **Update package.json build script (Recommended Fix)**:
+
+   - The `package.json` has been updated to use `node` directly instead of the binary
+   - Change the build script in `frontend/package.json` to:
+     ```json
+     "build": "node node_modules/react-scripts/scripts/build.js"
+     ```
+   - This bypasses permission issues by running the script directly with Node
+   - Commit and push this change, then redeploy
+
+5. **Alternative: Use npx in Vercel Dashboard**:
+
+   - In Vercel Dashboard → Settings → General → Build & Development Settings
+   - Change Build Command to: `npx react-scripts build`
+   - This bypasses permission issues with the binary
+
+6. **If still failing, verify Root Directory**:
+
+   - Make sure Root Directory is set to `frontend` (not empty)
+   - If Root Directory is empty, Vercel tries to build from root and can't find the right files
 
 ### Database connection fails:
 

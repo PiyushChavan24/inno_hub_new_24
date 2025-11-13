@@ -64,6 +64,7 @@ Desktop.ini
 # parcel-bundler cache
 .cache
 .parcel-cache
+node_modules/.cache
 
 # Next.js (if you migrate in future)
 .next

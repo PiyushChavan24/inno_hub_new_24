@@ -1,8 +1,8 @@
 {
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "https://innohub-guz6.onrender.com/api/:path*"
-    }
-  ]
+ "rewrites": [
+  {
+   "source": "/api/:path*",
+   "destination": "https://innohub-guz6.onrender.com/api/:path*"
+  }
+ ]
 }
