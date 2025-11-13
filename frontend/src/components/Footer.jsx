@@ -8,11 +8,19 @@ import {
  Linkedin,
  Mail,
  FolderOpen,
- Info,
  HelpCircle,
+ LayoutDashboard,
+ Upload,
+ Compass,
+ FileText,
+ Shield,
+ Users,
 } from "lucide-react";
 
 const Footer = () => {
+ // Get user role from localStorage
+ const user = JSON.parse(localStorage.getItem("user") || "null");
+ const role = user?.role || null;
  return (
   <footer className="relative bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 text-white overflow-hidden">
    {/* Background Pattern */}
@@ -58,7 +66,7 @@ const Footer = () => {
       </div>
      </div>
 
-     {/* Platform Links */}
+     {/* Platform Links - Role-based */}
      <div>
       <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
        <div className="p-1.5 rounded bg-gradient-to-r from-blue-500 to-purple-500">
@@ -67,30 +75,137 @@ const Footer = () => {
        Platform
       </h3>
       <ul className="space-y-3">
-       <li>
-        <Link
-         to="/explore-projects"
-         className="flex items-center gap-2 text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-200 group">
-         <div className="w-1.5 h-1.5 rounded-full bg-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-         <span>Browse Projects</span>
-        </Link>
-       </li>
-       <li>
-        <Link
-         to="/upload-project"
-         className="flex items-center gap-2 text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-200 group">
-         <div className="w-1.5 h-1.5 rounded-full bg-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-         <span>Upload Project</span>
-        </Link>
-       </li>
-       <li>
-        <Link
-         to="/dashboard"
-         className="flex items-center gap-2 text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-200 group">
-         <div className="w-1.5 h-1.5 rounded-full bg-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-         <span>Dashboard</span>
-        </Link>
-       </li>
+       {role === "student" ? (
+        <>
+         <li>
+          <Link
+           to="/dashboard"
+           className="flex items-center gap-2 text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-200 group">
+           <div className="w-1.5 h-1.5 rounded-full bg-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+           <LayoutDashboard className="h-4 w-4" />
+           <span>Dashboard</span>
+          </Link>
+         </li>
+         <li>
+          <Link
+           to="/projects"
+           className="flex items-center gap-2 text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-200 group">
+           <div className="w-1.5 h-1.5 rounded-full bg-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+           <FolderOpen className="h-4 w-4" />
+           <span>My Projects</span>
+          </Link>
+         </li>
+         <li>
+          <Link
+           to="/explore-projects"
+           className="flex items-center gap-2 text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-200 group">
+           <div className="w-1.5 h-1.5 rounded-full bg-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+           <Compass className="h-4 w-4" />
+           <span>Explore Projects</span>
+          </Link>
+         </li>
+         <li>
+          <Link
+           to="/upload-project"
+           className="flex items-center gap-2 text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-200 group">
+           <div className="w-1.5 h-1.5 rounded-full bg-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+           <Upload className="h-4 w-4" />
+           <span>Upload Project</span>
+          </Link>
+         </li>
+        </>
+       ) : role === "mentor" ? (
+        <>
+         <li>
+          <Link
+           to="/mentor"
+           className="flex items-center gap-2 text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-200 group">
+           <div className="w-1.5 h-1.5 rounded-full bg-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+           <LayoutDashboard className="h-4 w-4" />
+           <span>Mentor Dashboard</span>
+          </Link>
+         </li>
+         <li>
+          <Link
+           to="/mentor/projects"
+           className="flex items-center gap-2 text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-200 group">
+           <div className="w-1.5 h-1.5 rounded-full bg-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+           <FileText className="h-4 w-4" />
+           <span>Review Projects</span>
+          </Link>
+         </li>
+         <li>
+          <Link
+           to="/mentor/reports"
+           className="flex items-center gap-2 text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-200 group">
+           <div className="w-1.5 h-1.5 rounded-full bg-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+           <Shield className="h-4 w-4" />
+           <span>Plagiarism Reports</span>
+          </Link>
+         </li>
+        </>
+       ) : role === "admin" ? (
+        <>
+         <li>
+          <Link
+           to="/admin"
+           className="flex items-center gap-2 text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-200 group">
+           <div className="w-1.5 h-1.5 rounded-full bg-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+           <LayoutDashboard className="h-4 w-4" />
+           <span>Admin Dashboard</span>
+          </Link>
+         </li>
+         <li>
+          <Link
+           to="/admin/manageusers"
+           className="flex items-center gap-2 text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-200 group">
+           <div className="w-1.5 h-1.5 rounded-full bg-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+           <Users className="h-4 w-4" />
+           <span>Manage Users</span>
+          </Link>
+         </li>
+         <li>
+          <Link
+           to="/admin/projects"
+           className="flex items-center gap-2 text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-200 group">
+           <div className="w-1.5 h-1.5 rounded-full bg-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+           <FolderOpen className="h-4 w-4" />
+           <span>All Projects</span>
+          </Link>
+         </li>
+        </>
+       ) : (
+        <>
+         {/* Default links for non-logged in users */}
+         <li>
+          <Link
+           to="/explore-projects"
+           className="flex items-center gap-2 text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-200 group">
+           <div className="w-1.5 h-1.5 rounded-full bg-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+           <Compass className="h-4 w-4" />
+           <span>Browse Projects</span>
+          </Link>
+         </li>
+         <li>
+          <Link
+           to="/upload-project"
+           className="flex items-center gap-2 text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-200 group">
+           <div className="w-1.5 h-1.5 rounded-full bg-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+           <Upload className="h-4 w-4" />
+           <span>Upload Project</span>
+          </Link>
+         </li>
+         <li>
+          <Link
+           to="/dashboard"
+           className="flex items-center gap-2 text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-200 group">
+           <div className="w-1.5 h-1.5 rounded-full bg-blue-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+           <LayoutDashboard className="h-4 w-4" />
+           <span>Dashboard</span>
+          </Link>
+         </li>
+        </>
+       )}
       </ul>
      </div>
 
@@ -125,42 +240,6 @@ const Footer = () => {
          className="flex items-center gap-2 text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-200 group">
          <div className="w-1.5 h-1.5 rounded-full bg-purple-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
          <span>Documentation</span>
-        </a>
-       </li>
-      </ul>
-     </div>
-
-     {/* Quick Links */}
-     <div>
-      <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
-       <div className="p-1.5 rounded bg-gradient-to-r from-green-500 to-emerald-500">
-        <Info className="h-4 w-4" />
-       </div>
-       Quick Links
-      </h3>
-      <ul className="space-y-3">
-       <li>
-        <Link
-         to="/home"
-         className="flex items-center gap-2 text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-200 group">
-         <div className="w-1.5 h-1.5 rounded-full bg-green-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-         <span>Home</span>
-        </Link>
-       </li>
-       <li>
-        <Link
-         to="/about"
-         className="flex items-center gap-2 text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-200 group">
-         <div className="w-1.5 h-1.5 rounded-full bg-green-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-         <span>About</span>
-        </Link>
-       </li>
-       <li>
-        <a
-         href="#"
-         className="flex items-center gap-2 text-gray-300 hover:text-white hover:translate-x-1 transition-all duration-200 group">
-         <div className="w-1.5 h-1.5 rounded-full bg-green-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-         <span>Contact</span>
         </a>
        </li>
       </ul>

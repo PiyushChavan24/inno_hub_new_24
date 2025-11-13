@@ -173,6 +173,11 @@ const Register = () => {
           <SelectItem value="admin">Admin</SelectItem>
          </SelectContent>
         </Select>
+        {role === "admin" && (
+         <p className="text-xs text-amber-600 bg-amber-50 border border-amber-200 rounded-md p-2 mt-2">
+          ⚠️ Note: Only one admin per university is allowed. If an admin already exists for your university, registration will be denied.
+         </p>
+        )}
        </div>
 
        {/* Password */}

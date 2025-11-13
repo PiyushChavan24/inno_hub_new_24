@@ -12,6 +12,7 @@ import mimetypes
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS, cross_origin
 from werkzeug.utils import secure_filename
+from werkzeug.exceptions import BadRequest
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 from dotenv import load_dotenv
@@ -37,6 +38,34 @@ CORS(app,
 
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config["MAX_CONTENT_LENGTH"] = 50 * 1024 * 1024  # 50MB
+
+# ============================
+# Error Handlers
+# ============================
+@app.errorhandler(BadRequest)
+def handle_bad_request(e):
+    """Handle 400 Bad Request errors, especially JSON parsing errors"""
+    if request.path.startswith("/api/"):
+        # Try to get more info about the error
+        error_msg = str(e.description) if hasattr(e, 'description') else str(e)
+        print(f"Bad Request on {request.path}: {error_msg}")
+        print(f"Content-Type: {request.content_type}")
+        print(f"Method: {request.method}")
+        print(f"Headers: {dict(request.headers)}")
+        
+        # Try to read the raw data
+        try:
+            raw_data = request.get_data(as_text=True)
+            print(f"Raw request data: {raw_data[:200]}")  # First 200 chars
+        except:
+            pass
+        
+        return jsonify({
+            "msg": "Bad request",
+            "error": error_msg,
+            "path": request.path
+        }), 400
+    return e
 
 # ============================
 # MongoDB Connection
@@ -207,60 +236,122 @@ def auth_required(fn):
 # ============================
 # Auth Routes
 # ============================
-@app.route("/api/auth/signup", methods=["POST"])
+@app.route("/api/auth/signup", methods=["POST", "OPTIONS"])
+@cross_origin()
 def signup():
-    data = request.json or {}
-    name = data.get("name")
-    email = data.get("email")
-    password = data.get("password")
-    role = data.get("role", "student")
-    university = data.get("university", "")  # <-- new field
+    # Handle CORS preflight
+    if request.method == "OPTIONS":
+        return jsonify({"ok": True}), 200
+    
+    try:
+        # Try to get JSON data with better error handling
+        if not request.is_json:
+            return jsonify({"msg": "Content-Type must be application/json"}), 400
+        
+        data = request.get_json(silent=True)
+        if not data:
+            return jsonify({"msg": "Invalid JSON in request body"}), 400
+        
+        name = data.get("name")
+        email = data.get("email")
+        password = data.get("password")
+        role = data.get("role", "student")
+        university = data.get("university", "")  # <-- new field
 
-    if not (name and email and password and university):
-        return jsonify({"msg": "Provide name, email, password, and university"}), 400
+        if not (name and email and password and university):
+            return jsonify({"msg": "Provide name, email, password, and university"}), 400
 
-    if users_col.find_one({"email": email}):
-        return jsonify({"msg": "Email already exists"}), 400
+        if users_col.find_one({"email": email}):
+            return jsonify({"msg": "Email already exists"}), 400
 
-    hashed = hashlib.sha256(password.encode()).hexdigest()
-    user = {
-        "name": name,
-        "email": email,
-        "password": hashed,
-        "role": role,
-        "university": university,  # <-- include in user doc
-        "createdAt": datetime.datetime.utcnow(),
-    }
+        # ✅ Check if admin already exists for this university
+        if role == "admin":
+            existing_admin = users_col.find_one({
+                "role": "admin",
+                "university": university
+            })
+            if existing_admin:
+                return jsonify({
+                    "msg": f"An admin already exists for {university}. Only one admin per university is allowed."
+                }), 400
 
-    res = users_col.insert_one(user)
-    user["_id"] = str(res.inserted_id)
-    user.pop("password", None)
+        hashed = hashlib.sha256(password.encode()).hexdigest()
+        user = {
+            "name": name,
+            "email": email,
+            "password": hashed,
+            "role": role,
+            "university": university,  # <-- include in user doc
+            "createdAt": datetime.datetime.utcnow(),
+        }
 
-    token = generate_token(user)
-    return jsonify({"token": token, "user": user})
+        res = users_col.insert_one(user)
+        user["_id"] = str(res.inserted_id)
+        user.pop("password", None)
 
-@app.route("/api/auth/login", methods=["POST"])
+        token = generate_token(user)
+        return jsonify({"token": token, "user": user})
+    
+    except Exception as e:
+        print(f"Signup error: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({"msg": "Server error", "error": str(e)}), 500
+
+@app.route("/api/auth/login", methods=["POST", "OPTIONS"])
+@cross_origin()
 def login():
-    data = request.json or {}
-    email = data.get("email")
-    password = data.get("password")
+    # Handle CORS preflight
+    if request.method == "OPTIONS":
+        return jsonify({"ok": True}), 200
+    
+    try:
+        # Force JSON parsing - this will handle cases where Content-Type might not be recognized
+        data = request.get_json(force=True, silent=True)
+        
+        # If force=True still returns None, try to parse manually
+        if data is None:
+            try:
+                import json
+                raw_data = request.get_data(as_text=True)
+                if raw_data:
+                    data = json.loads(raw_data)
+                else:
+                    return jsonify({"msg": "Request body is empty"}), 400
+            except json.JSONDecodeError:
+                return jsonify({"msg": "Invalid JSON in request body"}), 400
+            except Exception as e:
+                print(f"Error parsing request: {e}")
+                return jsonify({"msg": "Error parsing request", "error": str(e)}), 400
+        
+        if not isinstance(data, dict):
+            return jsonify({"msg": "Request body must be a JSON object"}), 400
+        
+        email = data.get("email")
+        password = data.get("password")
 
-    if not (email and password):
-        return jsonify({"msg": "Provide email and password"}), 400
+        if not email or not password:
+            return jsonify({"msg": "Provide email and password"}), 400
 
-    user = users_col.find_one({"email": email})
-    if not user:
-        return jsonify({"msg": "Invalid credentials"}), 400
+        user = users_col.find_one({"email": email})
+        if not user:
+            return jsonify({"msg": "Invalid credentials"}), 400
 
-    hashed = hashlib.sha256(password.encode()).hexdigest()
-    if hashed != user.get("password"):
-        return jsonify({"msg": "Invalid credentials"}), 400
+        hashed = hashlib.sha256(password.encode()).hexdigest()
+        if hashed != user.get("password"):
+            return jsonify({"msg": "Invalid credentials"}), 400
 
-    token = generate_token(user)
-    user["_id"] = str(user["_id"])
-    user.pop("password", None)
+        token = generate_token(user)
+        user["_id"] = str(user["_id"])
+        user.pop("password", None)
 
-    return jsonify({"token": token, "user": user})
+        return jsonify({"token": token, "user": user})
+    
+    except Exception as e:
+        print(f"Login error: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({"msg": "Server error", "error": str(e)}), 500
 
 @app.route("/", methods=["GET"])
 def index():
@@ -838,7 +929,16 @@ def get_my_projects():
         user_id = ObjectId(request.user_id)
 
         user_projects = []
-        for p in projects_col.find({"uploadedBy": user_id}).sort("uploadDate", -1):
+        # ✅ Find projects where user is either the uploader OR a teammate
+        # Using $or to match either condition
+        query = {
+            "$or": [
+                {"uploadedBy": user_id},  # Projects uploaded by user
+                {"teammates._id": user_id}  # Projects where user is a teammate (ObjectId format)
+            ]
+        }
+        
+        for p in projects_col.find(query).sort("uploadDate", -1):
             p = convert_objectids(p)
 
             p["student"] = resolve_user_name(p.get("uploadedBy"))

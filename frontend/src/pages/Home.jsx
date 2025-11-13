@@ -1,6 +1,6 @@
 /** @format */
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
@@ -22,41 +22,59 @@ import ProjectCard from "../components/ProjectCard";
 import heroBackground from "../assets/hero-background.jpg";
 
 export default function Home() {
- const featuredProjects = [
-  {
-   id: "1",
-   title: "Explainable AI for Healthcare Diagnostics",
-   description:
-    "AI-driven diagnostics and medical image analysis with human-interpretable explanations.",
-   category: "AI",
-   university: "MIT School of Engineering, Pune",
-   members: 3,
-   publishDate: "Nov 21, 2024",
-   views: 1250,
-  },
-  {
-   id: "2",
-   title: "Edge Computing Cloud Integration",
-   description:
-    "Integrating edge computing with cloud infrastructure for reduced latency.",
-   category: "Cloud",
-   university: "Stanford University",
-   members: 2,
-   publishDate: "Nov 22, 2024",
-   views: 890,
-  },
-  {
-   id: "3",
-   title: "Blockchain Supply Chain System",
-   description:
-    "Decentralized supply chain management using blockchain technology.",
-   category: "Blockchain",
-   university: "Oxford University",
-   members: 4,
-   publishDate: "Nov 20, 2024",
-   views: 1540,
-  },
- ];
+ const [featuredProjects, setFeaturedProjects] = useState([]);
+ const [loading, setLoading] = useState(true);
+
+ // Fetch approved projects
+ useEffect(() => {
+  fetchFeaturedProjects();
+ }, []);
+
+ const fetchFeaturedProjects = async () => {
+  try {
+   const token = localStorage.getItem("token");
+   const API = "http://127.0.0.1:5000/api/projects/approved";
+
+   const res = await fetch(API, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+   });
+
+   if (!res.ok) {
+    throw new Error("Failed to fetch projects");
+   }
+
+   const data = await res.json();
+   const projects = data.projects || [];
+
+   // Map API response to ProjectCard format and limit to 6 featured projects
+   const mappedProjects = projects
+    .slice(0, 6)
+    .map((project) => ({
+     id: project._id,
+     title: project.title || "Untitled Project",
+     description: project.description || "No description available.",
+     category: project.category || "General",
+     university: project.university || project.uploadedBy || "Unknown University",
+     members: project.teammates?.length || 0,
+     publishDate: project.uploadDate
+      ? new Date(project.uploadDate).toLocaleDateString("en-US", {
+         year: "numeric",
+         month: "short",
+         day: "numeric",
+        })
+      : "Unknown Date",
+     views: project.download_count || 0,
+    }));
+
+   setFeaturedProjects(mappedProjects);
+  } catch (error) {
+   console.error("Failed to fetch featured projects:", error);
+   // Keep empty array on error
+   setFeaturedProjects([]);
+  } finally {
+   setLoading(false);
+  }
+ };
 
  const stats = [
   { icon: Sparkles, label: "Active Projects", value: "2,500+" },
@@ -227,11 +245,33 @@ export default function Home() {
        </Button>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-       {featuredProjects.map((project) => (
-        <ProjectCard key={project.id} {...project} />
-       ))}
-      </div>
+      {loading ? (
+       <div className="text-center py-16">
+        <div className="inline-block p-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 mb-4">
+         <Award className="h-8 w-8 text-white animate-pulse" />
+        </div>
+        <p className="text-gray-600 font-medium text-lg">Loading featured projects...</p>
+        <p className="text-sm text-gray-500 mt-2">Please wait while we fetch approved projects</p>
+       </div>
+      ) : featuredProjects.length > 0 ? (
+       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {featuredProjects.map((project) => (
+         <ProjectCard key={project.id} {...project} />
+        ))}
+       </div>
+      ) : (
+       <div className="text-center py-16 px-4">
+        <div className="inline-block p-4 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 mb-4">
+         <Award className="h-8 w-8 text-gray-400" />
+        </div>
+        <p className="text-lg font-semibold text-gray-700 mb-2">
+         No featured projects available
+        </p>
+        <p className="text-gray-600 mb-6 max-w-md mx-auto">
+         There are no approved projects available at the moment. Check back later!
+        </p>
+       </div>
+      )}
      </div>
     </section>
 

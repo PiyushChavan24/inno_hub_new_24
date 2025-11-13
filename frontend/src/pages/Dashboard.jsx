@@ -579,9 +579,7 @@ import {
 
 import {
  FolderOpen,
- Eye,
  Download,
- TrendingUp,
  Edit,
  Trash2,
  Plus,
@@ -696,6 +694,11 @@ const Dashboard = () => {
   }
  }
 
+ // ✅ Calculate total downloads for approved projects
+ const totalDownloads = myProjects
+  ?.filter((project) => project.approved === true)
+  ?.reduce((sum, project) => sum + (project.download_count || 0), 0) || 0;
+
  // ✅ safe stats block
  const stats = [
   {
@@ -705,22 +708,10 @@ const Dashboard = () => {
    color: "text-blue-500",
   },
   {
-   icon: Eye,
-   label: "Total Views",
-   value: "—",
-   color: "text-green-500",
-  },
-  {
    icon: Download,
    label: "Downloads",
-   value: "—",
+   value: totalDownloads.toString(),
    color: "text-purple-500",
-  },
-  {
-   icon: TrendingUp,
-   label: "Engagement",
-   value: "—",
-   color: "text-orange-500",
   },
  ];
 
@@ -844,18 +835,40 @@ const Dashboard = () => {
            </TableHeader>
 
            <TableBody>
-            {myProjects.map((project, index) => (
-             <TableRow
-              key={project._id}
-              className="hover:bg-blue-50/50 transition-colors border-b">
-              <TableCell className="font-medium">
-               <Link
-                to={`/project/${project._id}`}
-                className="text-gray-800 hover:text-blue-600 transition-colors flex items-center gap-2">
-                <FolderOpen className="h-4 w-4 text-gray-400" />
-                {project.title}
-               </Link>
-              </TableCell>
+            {myProjects.map((project, index) => {
+             // Check if current user is the uploader or a teammate
+             const user = JSON.parse(localStorage.getItem("user") || "null");
+             const userId = user?._id;
+             
+             // Check if user is the uploader (uploadedBy can be string or object)
+             const uploadedById = typeof project.uploadedBy === 'object' 
+               ? project.uploadedBy?._id || project.uploadedBy 
+               : project.uploadedBy;
+             const isUploader = String(uploadedById) === String(userId);
+             
+             // Check if user is a teammate
+             const isTeammate = !isUploader && project.teammates?.some((t) => {
+              const teammateId = typeof t === 'object' ? (t._id || t) : t;
+              return String(teammateId) === String(userId);
+             });
+             
+             return (
+              <TableRow
+               key={project._id}
+               className="hover:bg-blue-50/50 transition-colors border-b">
+               <TableCell className="font-medium">
+                <Link
+                 to={`/project/${project._id}`}
+                 className="text-gray-800 hover:text-blue-600 transition-colors flex items-center gap-2">
+                 <FolderOpen className="h-4 w-4 text-gray-400" />
+                 {project.title}
+                 {isTeammate && (
+                  <span className="ml-2 text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-medium">
+                   Team Member
+                  </span>
+                 )}
+                </Link>
+               </TableCell>
 
               <TableCell>
                <Badge
@@ -870,26 +883,31 @@ const Dashboard = () => {
               </TableCell>
 
               <TableCell className="text-right">
-               <div className="flex justify-end gap-2">
-                <Button
-                 size="icon"
-                 variant="ghost"
-                 onClick={() => openEditPopup(project)}
-                 className="hover:bg-blue-100 hover:text-blue-600 transition-colors">
-                 <Edit className="h-4 w-4" />
-                </Button>
+               {isUploader ? (
+                <div className="flex justify-end gap-2">
+                 <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={() => openEditPopup(project)}
+                  className="hover:bg-blue-100 hover:text-blue-600 transition-colors">
+                  <Edit className="h-4 w-4" />
+                 </Button>
 
-                <Button
-                 size="icon"
-                 variant="ghost"
-                 onClick={() => deleteProject(project._id)}
-                 className="hover:bg-red-100 hover:text-red-600 transition-colors">
-                 <Trash2 className="h-4 w-4" />
-                </Button>
-               </div>
+                 <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={() => deleteProject(project._id)}
+                  className="hover:bg-red-100 hover:text-red-600 transition-colors">
+                  <Trash2 className="h-4 w-4" />
+                 </Button>
+                </div>
+               ) : (
+                <span className="text-xs text-gray-500">View Only</span>
+               )}
               </TableCell>
              </TableRow>
-            ))}
+             );
+            })}
            </TableBody>
           </Table>
          </div>

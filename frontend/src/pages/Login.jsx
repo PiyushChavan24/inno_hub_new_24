@@ -22,17 +22,35 @@ const Login = () => {
  const handleLogin = async (e) => {
   e.preventDefault();
 
+  // Validate inputs before sending
+  if (!email || !password) {
+   toast.error("Please enter both email and password");
+   return;
+  }
+
   try {
    const res = await fetch("http://127.0.0.1:5000/api/auth/login", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+     "Content-Type": "application/json",
+     Accept: "application/json",
+    },
     body: JSON.stringify({ email, password }),
    });
 
-   const data = await res.json();
+   // Check if response is ok before parsing JSON
+   let data;
+   try {
+    data = await res.json();
+   } catch (jsonError) {
+    console.error("Failed to parse response JSON:", jsonError);
+    toast.error("Server returned invalid response");
+    return;
+   }
 
    if (!res.ok) {
-    toast.error(data.msg || "Invalid login credentials");
+    toast.error(data.msg || `Login failed: ${res.status} ${res.statusText}`);
+    console.error("Login error:", data);
     return;
    }
 
