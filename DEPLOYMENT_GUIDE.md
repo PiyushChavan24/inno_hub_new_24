@@ -155,11 +155,12 @@ This guide provides step-by-step instructions to deploy your Flask + React appli
    - Click "Add New Project"
    - Import your GitHub repository
    - Configure:
-     - **Framework Preset**: Create React App
-     - **Root Directory**: `frontend`
-     - **Build Command**: `npm run build` (or leave default)
+     - **Framework Preset**: Create React App (or "Other" if you want full control)
+     - **Root Directory**: `frontend` ⚠️ **IMPORTANT: Must be set to `frontend`**
+     - **Build Command**: `npm run build` ⚠️ **Must use `npm run build` (not `npx react-scripts build`)**
      - **Output Directory**: `build`
      - **Install Command**: `npm install`
+   - ⚠️ **Note**: The `vercel.json` file already specifies the build command, but make sure your dashboard settings match to avoid conflicts
 
 3. **Set Environment Variables (Optional - Skip if using proxy)**
 
