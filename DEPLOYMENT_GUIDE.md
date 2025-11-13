@@ -65,13 +65,14 @@ This guide provides step-by-step instructions to deploy your Flask + React appli
 
 1. **Prepare Backend for Deployment**
 
-   - Create a file `backend/Procfile` (if not exists) with:
+   - Create a file `Procfile` in the **root directory** (or `backend/Procfile`) with:
      ```
-     web: gunicorn app:app
+     web: cd backend && gunicorn app:app --bind 0.0.0.0:$PORT
      ```
    - Update `backend/requirements.txt` to include:
      ```
      gunicorn==21.2.0
+     reportlab==4.0.7
      ```
    - Ensure `backend/app.py` has:
      ```python
