@@ -358,7 +358,7 @@
 //   try {
 //    const token = localStorage.getItem("token");
 
-//    const res = await fetch("http://127.0.0.1:5000/api/projects/my", {
+//    const res = await fetch("/api/projects/my", {
 //     headers: {
 //      Authorization: `Bearer ${token}`,
 //     },
@@ -387,7 +387,7 @@
 //   try {
 //    const token = localStorage.getItem("token");
 
-//    const res = await fetch(`http://127.0.0.1:5000/api/projects/${id}`, {
+//    const res = await fetch(`/api/projects/${id}`, {
 //     method: "DELETE",
 //     headers: {
 //      Authorization: `Bearer ${token}`,
@@ -610,7 +610,7 @@ const Dashboard = () => {
   try {
    const token = localStorage.getItem("token");
 
-   const res = await fetch("http://127.0.0.1:5000/api/projects/my", {
+   const res = await fetch("/api/projects/my", {
     headers: {
      Authorization: `Bearer ${token}`,
     },
@@ -644,7 +644,7 @@ const Dashboard = () => {
   try {
    const token = localStorage.getItem("token");
 
-   const res = await fetch(`http://127.0.0.1:5000/api/projects/${id}`, {
+   const res = await fetch(`/api/projects/${id}`, {
     method: "PUT",
     headers: {
      Authorization: `Bearer ${token}`,
@@ -673,7 +673,7 @@ const Dashboard = () => {
   try {
    const token = localStorage.getItem("token");
 
-   const res = await fetch(`http://127.0.0.1:5000/api/projects/${id}`, {
+   const res = await fetch(`/api/projects/${id}`, {
     method: "DELETE",
     headers: {
      Authorization: `Bearer ${token}`,

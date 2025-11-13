@@ -31,7 +31,7 @@ const AdminDashboard = () => {
   const fetchStats = async () => {
    try {
     const token = localStorage.getItem("token");
-    const res = await fetch("http://127.0.0.1:5000/api/admin/overview", {
+    const res = await fetch("/api/admin/overview", {
      headers: {
       Authorization: `Bearer ${token}`,
      },

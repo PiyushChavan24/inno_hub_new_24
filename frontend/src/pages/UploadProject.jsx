@@ -35,7 +35,7 @@ const UploadProject = () => {
  useEffect(() => {
   const fetchMentors = async () => {
    try {
-    const res = await fetch("http://127.0.0.1:5000/api/mentors/my-university", {
+    const res = await fetch("/api/mentors/my-university", {
      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
     const data = await res.json();
@@ -53,7 +53,7 @@ const UploadProject = () => {
   const fetchStudents = async () => {
    try {
     const res = await fetch(
-     "http://127.0.0.1:5000/api/students/my-university",
+     "/api/students/my-university",
      {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
      }
@@ -138,7 +138,7 @@ const UploadProject = () => {
   formData.append("teammates", JSON.stringify(finalTeammates));
 
   try {
-   const res = await fetch("http://127.0.0.1:5000/api/projects/upload", {
+   const res = await fetch("/api/projects/upload", {
     method: "POST",
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     body: formData,

@@ -38,7 +38,7 @@ const AdminProjects = () => {
  const token = localStorage.getItem("token");
  const navigate = useNavigate();
 
- const API = "http://127.0.0.1:5000/api/admin/projects";
+ const API = "/api/admin/projects";
 
  // ✅ Fetch all projects
  const fetchAllProjects = async () => {
@@ -62,7 +62,7 @@ const AdminProjects = () => {
  const approveProject = async (projectId) => {
   try {
    const res = await fetch(
-    `http://127.0.0.1:5000/api/mentor/projects/${projectId}/approve`,
+    `/api/mentor/projects/${projectId}/approve`,
     {
      method: "PATCH",
      headers: { Authorization: `Bearer ${token}` },
@@ -94,7 +94,7 @@ const AdminProjects = () => {
 
   try {
    const res = await fetch(
-    `http://127.0.0.1:5000/api/admin/projects/${projectId}`,
+    `/api/admin/projects/${projectId}`,
     {
      method: "DELETE",
      headers: { Authorization: `Bearer ${token}` },
@@ -118,7 +118,7 @@ const AdminProjects = () => {
  const handleDownload = async (projectId) => {
   try {
    const response = await fetch(
-    `http://127.0.0.1:5000/api/projects/download/${projectId}`,
+    `/api/projects/download/${projectId}`,
     {
      method: "GET",
      headers: { Authorization: `Bearer ${token}` },

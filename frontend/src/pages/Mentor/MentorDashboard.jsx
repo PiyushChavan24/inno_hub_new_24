@@ -7,7 +7,7 @@
 //  const [projects, setProjects] = useState([]);
 
 //  useEffect(() => {
-//   fetch("http://127.0.0.1:5000/api/mentor/projects", {
+//   fetch("/api/mentor/projects", {
 //    headers: {
 //     Authorization: `Bearer ${localStorage.getItem("token")}`,
 //    },
@@ -84,7 +84,7 @@
 //   try {
 //    const token = localStorage.getItem("token");
 
-//    const res = await fetch("http://127.0.0.1:5000/api/projects/my", {
+//    const res = await fetch("/api/projects/my", {
 //     headers: {
 //      Authorization: `Bearer ${token}`,
 //     },
@@ -118,7 +118,7 @@
 //   try {
 //    const token = localStorage.getItem("token");
 
-//    const res = await fetch(`http://127.0.0.1:5000/api/projects/${id}`, {
+//    const res = await fetch(`/api/projects/${id}`, {
 //     method: "PUT",
 //     headers: {
 //      Authorization: `Bearer ${token}`,
@@ -147,7 +147,7 @@
 //   try {
 //    const token = localStorage.getItem("token");
 
-//    const res = await fetch(`http://127.0.0.1:5000/api/projects/${id}`, {
+//    const res = await fetch(`/api/projects/${id}`, {
 //     method: "DELETE",
 //     headers: {
 //      Authorization: `Bearer ${token}`,
@@ -379,7 +379,7 @@ const MentorDashboard = () => {
   try {
    const token = localStorage.getItem("token");
 
-   const res = await fetch("http://127.0.0.1:5000/api/mentor/projects", {
+   const res = await fetch("/api/mentor/projects", {
     headers: {
      Authorization: `Bearer ${token}`,
     },
@@ -411,7 +411,7 @@ const MentorDashboard = () => {
   try {
    const token = localStorage.getItem("token");
 
-   const res = await fetch(`http://127.0.0.1:5000/api/projects/${id}`, {
+   const res = await fetch(`/api/projects/${id}`, {
     method: "PUT",
     headers: {
      Authorization: `Bearer ${token}`,
@@ -440,7 +440,7 @@ const MentorDashboard = () => {
   try {
    const token = localStorage.getItem("token");
 
-   const res = await fetch(`http://127.0.0.1:5000/api/projects/${id}`, {
+   const res = await fetch(`/api/projects/${id}`, {
     method: "DELETE",
     headers: {
      Authorization: `Bearer ${token}`,
@@ -469,7 +469,7 @@ const MentorDashboard = () => {
    const token = localStorage.getItem("token");
 
    const res = await fetch(
-    `http://127.0.0.1:5000/api/mentor/projects/${id}/approve`,
+    `/api/mentor/projects/${id}/approve`,
     {
      method: "PATCH",
      headers: {

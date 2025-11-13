@@ -28,7 +28,7 @@
 
 //  const token = localStorage.getItem("token");
 //  const navigate = useNavigate();
-//  const API = "http://127.0.0.1:5000/api/projects/approved"; // ✅ Fetch only approved projects
+//  const API = "/api/projects/approved"; // ✅ Fetch only approved projects
 
 //  // Fetch approved projects
 //  const fetchApprovedProjects = async () => {
@@ -51,7 +51,7 @@
 //   if (!window.confirm("Are you sure you want to delete this project?")) return;
 
 //   try {
-//    const res = await fetch(`http://127.0.0.1:5000/api/projects/${projectId}`, {
+//    const res = await fetch(`/api/projects/${projectId}`, {
 //     method: "DELETE",
 //     headers: { Authorization: `Bearer ${token}` },
 //    });
@@ -187,7 +187,7 @@
 //             variant="outline"
 //             onClick={() =>
 //              window.open(
-//               `http://127.0.0.1:5000/api/projects/download/${project._id}`
+//               `/api/projects/download/${project._id}`
 //              )
 //             }>
 //             Download
@@ -254,7 +254,7 @@ const Explore = () => {
  const [loading, setLoading] = useState(true);
 
  const token = localStorage.getItem("token");
- const API = "http://127.0.0.1:5000/api/projects/approved";
+ const API = "/api/projects/approved";
 
  // Fetch approved projects
  const fetchApprovedProjects = async () => {

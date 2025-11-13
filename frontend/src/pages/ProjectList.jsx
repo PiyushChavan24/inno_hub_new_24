@@ -24,13 +24,13 @@
 // //   const nav = useNavigate();
 // //   useEffect(()=>{ fetchList(); },[]);
 // //   async function fetchList(){
-// //     const res = await fetch('http://localhost:5000/api/projects');
+// //     const res = await fetch('/api/projects');
 // //     const data = await res.json();
 // //     if(res.ok) setProjects(data.projects);
 // //     else alert(data.msg||'Error');
 // //   }
 // //   async function download(id){
-// //     window.location = 'http://localhost:5000/api/projects/download/'+id;
+// //     window.location = '/api/projects/download/'+id;
 // //   }
 // //   function check(id){ nav('/plagiarism/'+id); }
 // //   return (
@@ -73,7 +73,7 @@
 //  async function fetchList() {
 //   try {
 //    const token = localStorage.getItem("token"); // ⚡ get JWT from localStorage
-//    const res = await fetch("http://127.0.0.1:5000/api/projects", {
+//    const res = await fetch("/api/projects", {
 //     headers: {
 //      "Content-Type": "application/json",
 //      Authorization: `Bearer ${token}`, // ⚡ pass token in header
@@ -91,7 +91,7 @@
 //  async function download(id) {
 //   const token = localStorage.getItem("token");
 //   // optional: add token if backend requires
-//   window.location = `http://localhost:5000/api/projects/download/${id}`;
+//   window.location = `/api/projects/download/${id}`;
 //  }
 
 //  function check(id) {
@@ -147,7 +147,7 @@
 //   try {
 //    const token = localStorage.getItem("token");
 
-//    const res = await fetch("http://127.0.0.1:5000/api/projects/my", {
+//    const res = await fetch("/api/projects/my", {
 //     headers: {
 //      "Content-Type": "application/json",
 //      Authorization: `Bearer ${token}`,
@@ -174,7 +174,7 @@
 //    const token = localStorage.getItem("token");
 
 //    const res = await fetch(
-//     `http://localhost:5000/api/projects/download/${id}`,
+//     `/api/projects/download/${id}`,
 //     {
 //      method: "GET",
 //      headers: {
@@ -338,7 +338,7 @@ export default function ProjectList() {
   try {
    const token = localStorage.getItem("token");
 
-   const res = await fetch("http://127.0.0.1:5000/api/projects/my", {
+   const res = await fetch("/api/projects/my", {
     headers: {
      "Content-Type": "application/json",
      Authorization: `Bearer ${token}`,
@@ -367,7 +367,7 @@ export default function ProjectList() {
    const token = localStorage.getItem("token");
 
    const res = await fetch(
-    `http://127.0.0.1:5000/api/projects/download/${id}`,
+    `/api/projects/download/${id}`,
     {
      method: "GET",
      headers: {

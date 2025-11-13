@@ -37,7 +37,7 @@ const MentorReports = () => {
  const fetchReports = async () => {
   try {
    const token = localStorage.getItem("token");
-   const res = await fetch("http://127.0.0.1:5000/api/mentor/reports", {
+   const res = await fetch("/api/mentor/reports", {
     headers: {
      Authorization: `Bearer ${token}`,
     },
@@ -73,7 +73,7 @@ const MentorReports = () => {
   try {
    const token = localStorage.getItem("token");
    const response = await fetch(
-    `http://127.0.0.1:5000/api/projects/${projectId}/plag-report`,
+    `/api/projects/${projectId}/plag-report`,
     {
      headers: {
       Authorization: `Bearer ${token}`,

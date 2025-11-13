@@ -34,7 +34,7 @@
 // //  useEffect(() => {
 // //   const fetchProject = async () => {
 // //    try {
-// //     const res = await fetch(`http://127.0.0.1:5000/api/projects/${id}`, {
+// //     const res = await fetch(`/api/projects/${id}`, {
 // //      headers: { Authorization: `Bearer ${token}` },
 // //     });
 // //     if (!res.ok) throw new Error("Project not found");
@@ -153,7 +153,7 @@
 //  useEffect(() => {
 //   const fetchProject = async () => {
 //    try {
-//     const res = await fetch(`http://127.0.0.1:5000/api/projects/${id}`, {
+//     const res = await fetch(`/api/projects/${id}`, {
 //      headers: { Authorization: `Bearer ${token}` },
 //     });
 //     if (!res.ok) throw new Error("Project not found");
@@ -392,7 +392,7 @@
 //  useEffect(() => {
 //   const fetchProject = async () => {
 //    try {
-//     const res = await fetch(`http://127.0.0.1:5000/api/projects/${id}`, {
+//     const res = await fetch(`/api/projects/${id}`, {
 //      headers: { Authorization: `Bearer ${token}` },
 //     });
 //     if (!res.ok) throw new Error("Project not found");
@@ -627,7 +627,7 @@
 
 //   const fetchProject = async () => {
 //    try {
-//     const res = await fetch(`http://127.0.0.1:5000/api/projects/${id}`, {
+//     const res = await fetch(`/api/projects/${id}`, {
 //      headers: { Authorization: `Bearer ${token}` },
 //     });
 //     if (!res.ok) throw new Error("Project not found");
@@ -787,7 +787,7 @@
 
 //   const fetchProject = async () => {
 //    try {
-//     const res = await fetch(`http://127.0.0.1:5000/api/projects/${id}`, {
+//     const res = await fetch(`/api/projects/${id}`, {
 //      headers: { Authorization: `Bearer ${token}` },
 //     });
 
@@ -820,7 +820,7 @@
 //  //    return;
 //  //   }
 
-//  //   const downloadUrl = `http://127.0.0.1:5000/api/projects/${id}/download`;
+//  //   const downloadUrl = `/api/projects/${id}/download`;
 
 //  //   const link = document.createElement("a");
 //  //   link.href = downloadUrl;
@@ -837,7 +837,7 @@
 //    return;
 //   }
 
-//   const downloadUrl = `http://127.0.0.1:5000/api/projects/${id}/download`;
+//   const downloadUrl = `/api/projects/${id}/download`;
 
 //   try {
 //    const response = await fetch(downloadUrl, {
@@ -1028,7 +1028,7 @@ const ProjectDetail = () => {
    setProject(null);
 
    try {
-    const res = await fetch(`http://127.0.0.1:5000/api/projects/${id}`, {
+    const res = await fetch(`/api/projects/${id}`, {
      headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -1061,7 +1061,7 @@ const ProjectDetail = () => {
   }
 
   // ✅ Use correct endpoint: /api/projects/download/<project_id>
-  const downloadUrl = `http://127.0.0.1:5000/api/projects/download/${id}`;
+  const downloadUrl = `/api/projects/download/${id}`;
 
   try {
    const response = await fetch(downloadUrl, {

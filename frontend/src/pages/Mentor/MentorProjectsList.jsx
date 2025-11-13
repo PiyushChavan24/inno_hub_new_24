@@ -31,7 +31,7 @@ const MentorProjectsList = () => {
  useEffect(() => {
   const fetchMentorProjects = async () => {
    try {
-    const res = await fetch("http://127.0.0.1:5000/api/mentor/projects", {
+    const res = await fetch("/api/mentor/projects", {
      headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
      },

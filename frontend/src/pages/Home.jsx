@@ -33,7 +33,7 @@ export default function Home() {
  const fetchFeaturedProjects = async () => {
   try {
    const token = localStorage.getItem("token");
-   const API = "http://127.0.0.1:5000/api/projects/approved";
+   const API = "/api/projects/approved";
 
    const res = await fetch(API, {
     headers: token ? { Authorization: `Bearer ${token}` } : {},

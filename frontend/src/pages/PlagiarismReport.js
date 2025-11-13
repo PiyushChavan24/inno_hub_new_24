@@ -17,7 +17,7 @@
 
 //  async function fetchReport() {
 //   try {
-//    const res = await fetch("http://127.0.0.1:5000/api/reports");
+//    const res = await fetch("/api/reports");
 //    if (!res.ok) throw new Error("Failed to fetch reports");
 //    const data = await res.json();
 //    // Find the report for the specific project
@@ -106,7 +106,7 @@ export default function PlagiarismReport() {
 
  async function fetchReport() {
   try {
-   const res = await fetch("http://127.0.0.1:5000/api/reports");
+   const res = await fetch("/api/reports");
    if (!res.ok) throw new Error("Failed to fetch reports");
    const data = await res.json();
 
@@ -127,7 +127,7 @@ export default function PlagiarismReport() {
 
  // ✅ Download PDF plagiarism report
  const downloadReport = () => {
-  window.open(`http://127.0.0.1:5000/api/projects/${id}/plag-report`, "_blank");
+  window.open(`/api/projects/${id}/plag-report`, "_blank");
  };
 
  // ✅ Get similarity badge color based on percentage

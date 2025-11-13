@@ -23,7 +23,7 @@
 // //   const [users, setUsers] = useState([]);
 // //   const [loading, setLoading] = useState(true);
 
-// //   const API_BASE = "http://localhost:5000/api/admin"; // ✅ Correct base URL
+// //   const API_BASE = "/api/admin"; // ✅ Correct base URL
 // //   const token = localStorage.getItem("token"); // ✅ Admin auth
 
 // //   const fetchUsers = async () => {
@@ -159,7 +159,7 @@
 //  const [users, setUsers] = useState([]);
 //  const [loading, setLoading] = useState(true);
 
-//  const API_BASE = "http://localhost:5000/api/admin"; // ✅ Correct base URL
+//  const API_BASE = "/api/admin"; // ✅ Correct base URL
 //  const token = localStorage.getItem("token"); // ✅ Admin auth
 
 //  const fetchUsers = async () => {
@@ -323,7 +323,7 @@ const ManageUsers = () => {
 
  const [selectedUser, setSelectedUser] = useState(null); // user we edit
 
- const API_BASE = "http://127.0.0.1:5000/api/admin";
+ const API_BASE = "/api/admin";
  const token = localStorage.getItem("token");
 
  // ✅ Fetch Users
