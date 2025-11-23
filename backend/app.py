@@ -25,7 +25,12 @@ from utils.plag_report_generator import generate_plagiarism_report
 # Load environment
 # ============================
 load_dotenv()
-UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER", "uploads")
+# For Vercel, use /tmp directory (writable in serverless functions)
+# For local/dev, use uploads folder
+if os.getenv("VERCEL"):
+    UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER", "/tmp/uploads")
+else:
+    UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER", "uploads")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 app = Flask(__name__)
@@ -1604,8 +1609,13 @@ def download_plagiarism_pdf_route(project_id):
     }
 
     # ✅ Generate PDF
-    os.makedirs("reports", exist_ok=True)
-    out_path = f"reports/{project_id}_report.pdf"
+    # Use /tmp/reports on Vercel, reports folder locally
+    if os.getenv("VERCEL"):
+        reports_dir = "/tmp/reports"
+    else:
+        reports_dir = "reports"
+    os.makedirs(reports_dir, exist_ok=True)
+    out_path = os.path.join(reports_dir, f"{project_id}_report.pdf")
 
     generate_plagiarism_report(formatted, out_path)
 

@@ -1,4 +1,4 @@
-# Quick Deployment Checklist
+# Quick Deployment Checklist - Vercel
 
 ## 🚀 Fast Track Deployment (30 minutes)
 
@@ -9,55 +9,34 @@
 - [ ] Allow network access (0.0.0.0/0)
 - [ ] Copy connection string (replace `<password>`)
 
-### 2. Backend Deployment - Render (10 min)
-- [ ] Sign up at https://render.com
-- [ ] New Web Service → Connect GitHub repo
-- [ ] Settings:
-  - Build: `cd backend && pip install -r requirements.txt`
-  - Start: `cd backend && gunicorn app:app --bind 0.0.0.0:$PORT`
-- [ ] Environment Variables:
+### 2. Vercel Deployment (15 min)
+- [ ] Sign up at https://vercel.com
+- [ ] Install Vercel CLI: `npm install -g vercel`
+- [ ] Login: `vercel login`
+- [ ] Deploy from project root: `vercel`
+- [ ] Set Environment Variables in Vercel Dashboard:
   ```
   MONGO_URI=<your-atlas-connection-string>
   JWT_SECRET=<random-secret>
-  PORT=10000
-  UPLOAD_FOLDER=uploads
+  VERCEL=1
   ```
-- [ ] Deploy → Copy backend URL
+- [ ] Deploy to production: `vercel --prod`
+- [ ] Copy your Vercel URL
 
-### 3. Frontend Deployment - Vercel (10 min)
-- [ ] Sign up at https://vercel.com
-- [ ] New Project → Import GitHub repo
-- [ ] Settings:
-  - Framework: Create React App
-  - Root Directory: `frontend`
-  - Build: `npm run build`
-  - Output: `build`
-- [ ] Create `frontend/vercel.json`:
-  ```json
-  {
-    "rewrites": [{
-      "source": "/api/:path*",
-      "destination": "https://YOUR-BACKEND-URL.onrender.com/api/:path*"
-    }]
-  }
-  ```
-- [ ] Deploy → Copy frontend URL
-
-### 4. Test (5 min)
-- [ ] Visit frontend URL
+### 3. Test (5 min)
+- [ ] Visit your Vercel URL
 - [ ] Try signup/login
 - [ ] Check browser console for errors
+- [ ] Test API: `curl https://your-app.vercel.app/api/projects`
 
 ---
 
 ## 📝 Files Created for You
 
-✅ `backend/Procfile` - For Render deployment
-✅ `backend/requirements.txt` - Updated with gunicorn
-✅ `frontend/vercel.json.example` - Template for Vercel proxy
-✅ `frontend/netlify.toml.example` - Template for Netlify
-
-**Action Required**: Copy `vercel.json.example` to `vercel.json` and update with your backend URL!
+✅ `vercel.json` - Root Vercel configuration
+✅ `api/index.py` - Vercel serverless function handler
+✅ `api/requirements.txt` - Python dependencies
+✅ `frontend/vercel.json` - Frontend configuration
 
 ---
 
@@ -66,22 +45,19 @@
 | Service | URL | Free Tier |
 |---------|-----|-----------|
 | **MongoDB Atlas** | https://mongodb.com/cloud/atlas | 512MB storage |
-| **Render** | https://render.com | 750 hrs/month |
-| **Vercel** | https://vercel.com | Unlimited |
-| **Netlify** | https://netlify.com | 100GB bandwidth |
+| **Vercel** | https://vercel.com | Unlimited requests, 100GB bandwidth |
 
 ---
 
 ## ⚠️ Important Notes
 
-1. **Backend URL**: Replace `YOUR-BACKEND-URL` in `vercel.json` with your actual Render backend URL
-2. **Cold Starts**: Render free tier spins down after 15 min (first request slow)
-3. **File Storage**: Uploads are ephemeral on free tiers (lost on restart)
-4. **Database**: MongoDB Atlas free tier is sufficient for development
+1. **File Storage**: Files are stored in `/tmp` (ephemeral). Files are deleted after function execution. Consider implementing Vercel Blob Storage for persistent files.
+2. **Cold Starts**: Vercel serverless functions may have cold starts (first request after inactivity can be slow).
+3. **Function Timeout**: Vercel free tier has a 10-second timeout. Upgrade to Pro for 60-second timeout.
+4. **Database**: MongoDB Atlas free tier is sufficient for development.
 
 ---
 
 ## 🆘 Need Help?
 
-See `DEPLOYMENT_GUIDE.md` for detailed step-by-step instructions.
-
+See `VERCEL_DEPLOYMENT.md` for detailed step-by-step instructions.
