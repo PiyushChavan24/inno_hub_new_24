@@ -5,6 +5,10 @@ This handler exposes the Flask app for Vercel's Python runtime
 import sys
 import os
 
+# Set Vercel environment variable (if not already set)
+if not os.getenv("VERCEL"):
+    os.environ["VERCEL"] = "1"
+
 # Get the absolute path to the backend directory
 current_dir = os.path.dirname(os.path.abspath(__file__))
 backend_dir = os.path.join(current_dir, '..', 'backend')

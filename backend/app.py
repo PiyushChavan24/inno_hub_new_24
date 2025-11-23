@@ -34,6 +34,7 @@ else:
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 app = Flask(__name__)
+
 # Configure CORS to handle all requests including preflight
 CORS(app, 
      origins="*", 
@@ -41,8 +42,16 @@ CORS(app,
      methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
      supports_credentials=False)
 
+# Flask configuration
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config["MAX_CONTENT_LENGTH"] = 50 * 1024 * 1024  # 50MB
+
+# Vercel-specific optimizations
+if os.getenv("VERCEL"):
+    # Disable debug mode on Vercel
+    app.config["DEBUG"] = False
+    # Optimize for serverless (no reloader needed)
+    app.config["USE_RELOADER"] = False
 
 # ============================
 # Error Handlers
